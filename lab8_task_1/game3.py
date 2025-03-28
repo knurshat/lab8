@@ -94,10 +94,6 @@ class Player(pygame.sprite.Sprite):
         
     def move(self):
         pressed_keys = pygame.key.get_pressed()
-       #if pressed_keys[K_UP]:
-            #self.rect.move_ip(0, -5)
-       #if pressed_keys[K_DOWN]:
-            #self.rect.move_ip(0,5)
          
         if self.rect.left > 0:
               if pressed_keys[K_LEFT]:
@@ -106,14 +102,14 @@ class Player(pygame.sprite.Sprite):
               if pressed_keys[K_RIGHT]:
                   self.rect.move_ip(5, 0)
                    
-#Setting up Sprites        
+#Спрайты      
 P1 = Player()
 E1 = Enemy()
 E2 = Enemy()
 C1 = Coin()
 C2 = Coin()
 C3 = Coin()
-#Creating Sprites Groups
+#Создание скриптовых групп
 enemies = pygame.sprite.Group()
 enemies.add(E1)
 enemies.add(E2)
@@ -129,14 +125,12 @@ all_sprites.add(C1)
 all_sprites.add(C2)
 all_sprites.add(C3)
  
-#Adding a new User event 
+
 INC_SPEED = pygame.USEREVENT + 1
 pygame.time.set_timer(INC_SPEED, 1000)
 
-#Game Loop
 while True:
-       
-    #Cycles through all events occurring  
+
     for event in pygame.event.get():
         if event.type == INC_SPEED:
               SPEED += 0.5     
@@ -154,8 +148,7 @@ while True:
     scores = font_small.render("Score: " + str(SCORE), True, BLACK)
     coin_scores = font_small.render("Coins: " + str(COIN_SCORE), True, BLACK)
     DISPLAYSURF.blit(coin_scores, (SCREEN_WIDTH - coin_scores.get_width() - 10, 10))
-    
-    #Moves and Re-draws all Sprites
+
     for entity in all_sprites:
         DISPLAYSURF.blit(entity.image, entity.rect)
         entity.move()
@@ -163,13 +156,12 @@ while True:
     if collected_coin:
         coin_sound = os.path.join(script_dir, 'coin-257878.mp3')
         pygame.mixer.Sound(coin_sound).play()
-        COIN_SCORE += 1  # Increase coin score
-        collected_coin.kill()  # Remove collected coin
-        new_coin = Coin()  # Create a new coin
+        COIN_SCORE += 1
+        collected_coin.kill() 
+        new_coin = Coin()  
         coins.add(new_coin)
         all_sprites.add(new_coin)
         coin_score = font.render(f"Score: {COIN_SCORE}",True, BLACK)
-    #To be run if collision occurs between Player and Enemy
     if pygame.sprite.spritecollideany(P1, enemies):
             pygame.mixer.music.stop()
             soundq = os.path.join(script_dir, 'car-crash-sfx.wav')
